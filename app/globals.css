@@ -109,3 +109,43 @@
     background-size: 64px 64px;
   }
 }
+
+/* Audit report: "Download PDF" uses the browser's print to PDF. */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  header,
+  footer,
+  .grain::before,
+  .grain::after {
+    display: none !important;
+  }
+  .audit-report,
+  .audit-report * {
+    color: #000 !important;
+    box-shadow: none !important;
+  }
+  .audit-report li,
+  .audit-report tr,
+  .audit-report figure,
+  .audit-report h3 {
+    break-inside: avoid;
+  }
+  .audit-report h3 {
+    break-after: avoid;
+  }
+  .audit-report i,
+  .audit-report svg {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  main {
+    min-height: 0 !important;
+  }
+}

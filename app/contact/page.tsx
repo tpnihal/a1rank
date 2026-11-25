@@ -18,13 +18,14 @@ export default function ContactPage({ searchParams }: Props) {
   const pkg = packageBySlug(first(searchParams.package));
   const website = normaliseUrl(first(searchParams.website) ?? "") ?? "";
   const audit = first(searchParams.topic) === "audit";
+  const consultation = first(searchParams.topic) === "consultation";
 
   return (
     <section className="grain relative overflow-hidden bg-a1-ink pb-24 pt-36 md:pt-44">
       <div className="absolute -right-40 -top-40 h-[40rem] w-[40rem] rounded-full bg-[radial-gradient(circle,rgba(236,37,99,0.3),transparent_65%)]" aria-hidden />
       <div className="wrap relative grid items-start gap-12 lg:grid-cols-[0.85fr_1.15fr]">
         <div>
-          <p className="eyebrow text-a1-coral">{audit ? "Professional website audit" : "Enquiry"}</p>
+          <p className="eyebrow text-a1-coral">{audit ? "Professional website audit" : consultation ? "Consultation" : "Enquiry"}</p>
           <h1 className="mt-4 text-[clamp(2.6rem,6.4vw,5rem)] font-extrabold leading-[0.98]">
             {pkg ? (
               <>
@@ -33,6 +34,10 @@ export default function ContactPage({ searchParams }: Props) {
             ) : audit ? (
               <>
                 Get a <span className="grad-text">full audit.</span>
+              </>
+            ) : consultation ? (
+              <>
+                Book a <span className="grad-text">consultation.</span>
               </>
             ) : (
               <>
@@ -43,7 +48,9 @@ export default function ContactPage({ searchParams }: Props) {
           <p className="mt-6 max-w-[26rem] text-a1-ash">
             {audit
               ? "Our team reviews your website, search visibility and tracking by hand and sends you a prioritised action plan."
-              : "Tell us about your business and what you want more of. We'll come back with a clear plan and the package that fits."}
+              : consultation
+                ? "Tell us a little about your business and when suits you. We'll reply to arrange a call."
+                : "Tell us about your business and what you want more of. We'll come back with a clear plan and the package that fits."}
           </p>
 
           {pkg ? (

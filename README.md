@@ -46,18 +46,31 @@ Gradient: `linear-gradient(135deg, #EF5245, #EC2563)`. The vector logo mark (`co
   `/services#meta-google-ads`), `/about`, `/works`, `/industries` and `/industries/[slug]`, `/privacy-policy`, `/terms`,
   `/blog`, `/blog/category/[slug]`, `/blog/[slug]`,
   `/contact` (enquiry form, `?package=go|pro|pro-max|grox` prefills the package),
-  `/website-audit` (placeholder until Stage 4), `/api/enquiry`
+  `/website-audit` (free audit tool), `/api/audit`, `/api/audit/explain`, `/api/enquiry`
 - `components/` page sections and UI
 - `lib/site.ts` all site content: services, packages, industries, works, navigation
 - `lib/blog/articles/*.ts` blog articles, one file per category. To add an article, append an object to the
   category file: it appears on `/blog`, its category page and the homepage automatically
+
+## Website Audit tool
+
+- The browser posts the URL to `/api/audit` twice (mobile and desktop). The server validates the URL, rate-limits by
+  IP and calls Google PageSpeed Insights with `PAGESPEED_API_KEY`. The key never reaches the browser.
+- `lib/audit/psi.ts` reduces Google's response to the report data. Every score and metric shown comes from that
+  response. If an audit fails, the page says so and shows no scores.
+- "Download PDF" uses the browser's print to PDF with a print stylesheet.
+- With `ANTHROPIC_API_KEY` set, `/api/audit/explain` adds a short AI-written summary. It receives only scores and
+  Lighthouse audit IDs. Without the key the section is omitted.
+- Rate limiting is in memory (`lib/rate-limit.ts`). For strict limits on serverless hosting, back it with a shared
+  store such as Upstash Redis.
+- On Vercel, `/api/audit` needs a function duration of up to 60 seconds (`maxDuration` is set in the route).
 
 ## Build stages
 
 1. Design system, navigation, footer and homepage (done)
 2. Services, About Us, Our Works and Industries pages (done)
 3. Blog system with categories and articles (done)
-4. Free public Website Audit tool
+4. Free public Website Audit tool (done)
 5. SEO, accessibility, performance, testing and deployment
 
 ## Content still to confirm
