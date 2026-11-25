@@ -50,7 +50,7 @@ function HeroVisual() {
 
 const FACTS = [
   { k: "10", v: "services under one roof" },
-  { k: "4", v: "growth packages, from AED 2,499" },
+  { k: "4", v: "growth packages, from AED 999" },
   { k: "AI", v: "powered content and automation" },
 ];
 

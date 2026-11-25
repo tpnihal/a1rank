@@ -179,7 +179,7 @@ export const PACKAGES: Package[] = [
   {
     slug: "go",
     name: "GO",
-    price: 2499,
+    price: 999,
     audience: "For startups and small shops getting a professional presence online.",
     inclusions: [
       "1 social platform, 12 designed posts / month",
@@ -193,12 +193,12 @@ export const PACKAGES: Package[] = [
   {
     slug: "pro",
     name: "Pro",
-    price: 4999,
+    price: 2999,
     audience: "For growing businesses that want steady leads every month.",
     inherits: "Everything in GO, plus",
     inclusions: [
       "2 platforms, 16 posts + 4 reels",
-      "Meta Ads management (1 campaign)",
+      "Meta Ads management (2 campaigns)",
       "On-page SEO for 10 keywords",
       "1 conversion landing page",
       "Lead tracking with GA4 & pixel",
@@ -208,7 +208,7 @@ export const PACKAGES: Package[] = [
   {
     slug: "pro-max",
     name: "Pro Max",
-    price: 8999,
+    price: 4999,
     audience: "For brands ready to lead their category across search and social.",
     badge: "Most popular",
     inherits: "Everything in Pro, plus",
@@ -225,7 +225,7 @@ export const PACKAGES: Package[] = [
   {
     slug: "grox",
     name: "Grox",
-    price: 14999,
+    price: 8999,
     from: true,
     audience: "Your full growth team: custom scope, AI automation and weekly reporting.",
     badge: "Full growth team",
