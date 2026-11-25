@@ -114,8 +114,8 @@ export function Works() {
         aria-label="Recent work"
         className="relative flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         style={{
-          paddingInline: "max(1.25rem, calc((100vw - 1240px) / 2 + 2rem))",
-          scrollPaddingInline: "max(1.25rem, calc((100vw - 1240px) / 2 + 2rem))",
+          paddingInline: "max(1.25rem, calc((100vw - 1400px) / 2 + 2rem))",
+          scrollPaddingInline: "max(1.25rem, calc((100vw - 1400px) / 2 + 2rem))",
         }}
       >
         {WORKS.map((w) => (

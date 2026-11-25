@@ -2,6 +2,7 @@ import { AuditTeaser } from "@/components/AuditTeaser";
 import { BlogTeaser } from "@/components/BlogTeaser";
 import { LensCta } from "@/components/LensCta";
 import { Hero } from "@/components/Hero";
+import { Launches } from "@/components/Launches";
 import { Industries } from "@/components/Industries";
 import { Marquee } from "@/components/Marquee";
 import { Packages } from "@/components/Packages";
@@ -16,6 +17,7 @@ export default function HomePage() {
       <Hero />
       <Marquee />
       <Services />
+      <Launches />
       <Statement />
       <Works />
       <Industries />

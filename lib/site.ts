@@ -383,3 +383,44 @@ export const AUDIT_STAGES = [
 ];
 
 export const INTERESTS = ["Website", "Social media", "SEO", "Meta / Google Ads", "Branding & design", "Photo & video", "AI automation"];
+
+export type Launch = {
+  title: string;
+  sector: string;
+  /** Short line shown under the title. */
+  summary: string;
+  /** Screenshot of the site's homepage, ideally 1600 x 1000 or larger. */
+  image: string;
+  /** Address shown in the browser bar. */
+  display: string;
+  /** Set to the live address to show a "Live" badge and link the card to the site. */
+  url?: string;
+};
+
+/**
+ * The three newest finished websites, shown as stacked cards on the homepage.
+ * These are placeholders: replace with real client sites (screenshot, name and live address).
+ */
+export const LAUNCHES: Launch[] = [
+  {
+    title: "Property showcase website",
+    sector: "Real estate · Dubai",
+    summary: "Listing search, enquiry buttons on every property and Arabic / English pages.",
+    image: "/images/stock/dubai-skyline.jpg",
+    display: "sample-project.ae",
+  },
+  {
+    title: "Restaurant booking website",
+    sector: "Food & beverage · Dubai",
+    summary: "Menu, table booking and WhatsApp ordering in a site that loads in under two seconds.",
+    image: "/images/stock/restaurant-interior.jpg",
+    display: "sample-project.ae",
+  },
+  {
+    title: "Clinic appointment website",
+    sector: "Healthcare · Dubai",
+    summary: "Treatment pages, doctor profiles and online appointment requests.",
+    image: "/images/stock/dental-clinic.jpg",
+    display: "sample-project.ae",
+  },
+];
