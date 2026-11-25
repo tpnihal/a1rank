@@ -38,21 +38,20 @@ function LaunchCard({ launch, index, total, progress }: { launch: Launch; index:
           {launch.url ? "Live" : "Sample"}
         </span>
       </div>
-      <div className="relative aspect-[16/10] w-full sm:aspect-auto sm:h-[min(62vh,36rem)]">
-        <Image src={launch.image} alt={`${launch.title}, ${launch.sector}`} fill sizes="(min-width: 1400px) 1320px, 94vw" className="object-cover" />
-        <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" aria-hidden />
-        <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-4 p-5 sm:p-8">
-          <div className="max-w-[34rem]">
-            <p className="eyebrow !text-[0.64rem] text-white/75">{launch.sector}</p>
-            <h3 className="mt-2 text-[clamp(1.35rem,3vw,2.3rem)] font-extrabold leading-[1.08] text-white">{launch.title}</h3>
-            <p className="mt-2 hidden text-[0.95rem] text-white/80 sm:block">{launch.summary}</p>
-          </div>
-          {launch.url ? (
-            <span className="btn-light shrink-0">
-              Visit site <ArrowUpRight />
-            </span>
-          ) : null}
+      <div className="relative aspect-[16/9] w-full sm:aspect-[12/5]">
+        <Image src={launch.image} alt={`Homepage of ${launch.title}`} fill sizes="(min-width: 1400px) 1320px, 94vw" className="object-cover object-top" />
+      </div>
+      <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-white/10 bg-a1-coal px-5 py-4 sm:px-7 sm:py-5">
+        <div className="min-w-0">
+          <p className="eyebrow !text-[0.62rem] text-a1-ash">{launch.sector}</p>
+          <h3 className="mt-1.5 text-[clamp(1.15rem,2.2vw,1.6rem)] font-extrabold leading-[1.1] text-white">{launch.title}</h3>
+          <p className="mt-1.5 hidden max-w-[44rem] text-[0.9rem] text-a1-ash md:block">{launch.summary}</p>
         </div>
+        {launch.url ? (
+          <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-4 py-2 text-[0.86rem] font-bold text-a1-ink transition group-hover:bg-a1-coral group-hover:text-white">
+            Visit site <ArrowUpRight />
+          </span>
+        ) : null}
       </div>
     </>
   );
@@ -69,7 +68,7 @@ function LaunchCard({ launch, index, total, progress }: { launch: Launch; index:
           className="relative overflow-hidden rounded-[1.5rem] border border-white/12 bg-a1-smoke shadow-[0_-24px_70px_-30px_rgba(0,0,0,0.9)] sm:rounded-[2rem]"
         >
           {launch.url ? (
-            <a href={launch.url} target="_blank" rel="noopener noreferrer" className="block" aria-label={`${launch.title}: visit the live site (opens in a new tab)`}>
+            <a href={launch.url} target="_blank" rel="noopener noreferrer" className="group block" aria-label={`${launch.title}: visit the live site (opens in a new tab)`}>
               {frame}
             </a>
           ) : (
@@ -88,7 +87,7 @@ export function Launches() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
   return (
-    <section id="latest-websites" className="relative bg-a1-ink py-16 md:py-24">
+    <section id="latest-websites" className="relative overflow-x-clip bg-a1-ink py-16 md:py-24">
       <div className="wrap">
         <Reveal className="mx-auto mb-10 max-w-[40rem] text-center md:mb-14">
           <p className="eyebrow text-a1-coral">Fresh launches</p>
