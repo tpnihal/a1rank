@@ -198,7 +198,7 @@ export const PACKAGES: Package[] = [
     inherits: "Everything in GO, plus",
     inclusions: [
       "2 platforms, 16 posts + 4 reels",
-      "Meta Ads management (1 campaign)",
+      "Meta Ads management (2 campaigns)",
       "On-page SEO for 10 keywords",
       "1 conversion landing page",
       "Lead tracking with GA4 & pixel",
