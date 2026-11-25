@@ -30,7 +30,7 @@ const config: Config = {
         sans: ["var(--font-body)", "Segoe UI", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "Menlo", "monospace"],
       },
-      maxWidth: { site: "1240px" },
+      maxWidth: { site: "1400px" },
       boxShadow: {
         glow: "0 18px 50px -18px rgba(236, 37, 99, 0.65)",
         "glow-lg": "0 40px 120px -40px rgba(236, 37, 99, 0.6)",

@@ -49,7 +49,7 @@
 
 @layer components {
   .wrap {
-    @apply mx-auto w-full max-w-site px-5 lg:px-8;
+    @apply mx-auto w-full max-w-site px-5 lg:px-10;
   }
   .eyebrow {
     @apply font-mono text-[0.72rem] uppercase tracking-[0.16em];
@@ -159,4 +159,17 @@
 }
 .text-a1-ink .text-a1-pink {
   color: #c9154d;
+}
+
+/* Homepage service cards: 3D tilt driven by --rx / --ry set from the cursor position. */
+.service-tilt {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform-style: preserve-3d;
+  transition: transform 0.25s ease-out, border-color 0.3s;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .service-tilt {
+    transform: none;
+  }
 }
