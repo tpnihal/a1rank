@@ -46,13 +46,18 @@ Gradient: `linear-gradient(135deg, #EF5245, #EC2563)`. The vector logo mark (`co
   `/services#meta-google-ads`), `/about`, `/works`, `/industries` and `/industries/[slug]`, `/privacy-policy`, `/terms`,
   `/blog`, `/blog/category/[slug]`, `/blog/[slug]`,
   `/contact` (enquiry form, `?package=go|pro|pro-max|grox` prefills the package),
-  `/website-audit` (free audit tool), `/api/audit`, `/api/audit/explain`, `/api/enquiry`
+  `/website-audit` (free audit tool), `/api/audit`, `/api/audit/explain`, `/api/audit/lead`, `/api/enquiry`
 - `components/` page sections and UI
 - `lib/site.ts` all site content: services, packages, industries, works, navigation
 - `lib/blog/articles/*.ts` blog articles, one file per category. To add an article, append an object to the
   category file: it appears on `/blog`, its category page and the homepage automatically
 
 ## Website Audit tool
+
+- The form asks for a website, an email address and an optional WhatsApp number. When the audit ends (or the
+  visitor leaves first), the browser posts them with the scores to
+  `/api/audit/lead`, which saves a row to a Google Sheet through `LEAD_WEBHOOK_URL`
+  (setup in `docs/audit-leads-google-sheet.md`) and also emails `ENQUIRY_TO` if Resend is configured.
 
 - The browser posts the URL to `/api/audit` twice (mobile and desktop). The server validates the URL, rate-limits by
   IP and calls Google PageSpeed Insights with `PAGESPEED_API_KEY`. The key never reaches the browser.

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import type { AuditError, AuditResult, Strategy } from "@/lib/audit/types";
 import { AUDIT_STAGES } from "@/lib/site";
@@ -15,6 +16,20 @@ type Phase =
   | { name: "error"; message: string };
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+type Lead = { email: string; phone: string; url: string; hp: string };
+
+/** Tells A1 Rank who ran the audit, with the scores when there are any. Nothing in the audit waits on this. */
+function sendLead(lead: Lead, results?: Partial<Record<Strategy, AuditResult>>) {
+  const scores = results ? Object.fromEntries(Object.entries(results).map(([k, r]) => [k, r.scores])) : undefined;
+  void fetch("/api/audit/lead", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...lead, scores }),
+    keepalive: true,
+  }).catch(() => undefined);
+}
 
 async function audit(url: string, strategy: Strategy, signal: AbortSignal): Promise<Outcome> {
   try {
@@ -34,24 +49,44 @@ async function audit(url: string, strategy: Strategy, signal: AbortSignal): Prom
   }
 }
 
-/** Free public audit: URL form, live progress, then a report built only from real PageSpeed Insights data. */
+/** Free public audit: website and email form, live progress, then a report built only from real PageSpeed Insights data. */
 export function AuditTool({ initialUrl = "" }: { initialUrl?: string }) {
   const [value, setValue] = useState(initialUrl);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [hp, setHp] = useState("");
   const [fieldError, setFieldError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const emailRef = useRef<HTMLInputElement>(null);
+  /** The lead for the audit in progress. It is sent once: with scores when the audit ends, or as it is if the visitor leaves first. */
+  const pending = useRef<Lead | null>(null);
+  const flushLead = useCallback((results?: Partial<Record<Strategy, AuditResult>>) => {
+    if (!pending.current) return;
+    sendLead(pending.current, results);
+    pending.current = null;
+  }, []);
   const [phase, setPhase] = useState<Phase>({ name: "idle" });
   const [stage, setStage] = useState(0);
   const [summary, setSummary] = useState<string | null>(null);
   const controller = useRef<AbortController | null>(null);
-  const autoRan = useRef(false);
   const top = useRef<HTMLDivElement>(null);
 
-  const run = useCallback(async (raw: string) => {
+  const run = useCallback(async (raw: string, rawEmail: string, rawPhone: string, trap: string) => {
     const url = normaliseUrl(raw);
+    const mail = rawEmail.trim();
+    const badEmail = !EMAIL_RE.test(mail);
+    setFieldError(url ? "" : "Enter a valid website address, for example yourbusiness.ae");
+    setEmailError(badEmail ? "Enter a valid email address, for example you@yourbusiness.ae" : "");
     if (!url) {
-      setFieldError("Enter a valid website address, for example yourbusiness.ae");
+      document.getElementById("audit-url")?.focus();
       return;
     }
-    setFieldError("");
+    if (badEmail) {
+      emailRef.current?.focus();
+      return;
+    }
+    flushLead();
+    pending.current = { email: mail, phone: rawPhone.trim(), url, hp: trap };
     setSummary(null);
     controller.current?.abort();
     const ac = new AbortController();
@@ -73,6 +108,7 @@ export function AuditTool({ initialUrl = "" }: { initialUrl?: string }) {
     if (ac.signal.aborted) return;
 
     if (!m.ok && !d.ok) {
+      flushLead();
       setPhase({ name: "error", message: m.error });
       return;
     }
@@ -85,6 +121,7 @@ export function AuditTool({ initialUrl = "" }: { initialUrl?: string }) {
     const results: Partial<Record<Strategy, AuditResult>> = {};
     if (m.ok) results.mobile = m.result;
     if (d.ok) results.desktop = d.result;
+    flushLead(results);
     const notice = !m.ok ? `The mobile audit could not be completed (${m.error}) Showing desktop results only.` : !d.ok ? `The desktop audit could not be completed (${d.error}) Showing mobile results only.` : undefined;
     setPhase({ name: "done", results, notice });
 
@@ -101,17 +138,21 @@ export function AuditTool({ initialUrl = "" }: { initialUrl?: string }) {
     } catch {
       /* summary is optional */
     }
-  }, []);
+  }, [flushLead]);
 
   useEffect(() => {
-    if (initialUrl && !autoRan.current) {
-      autoRan.current = true;
-      void run(initialUrl);
-    }
-    return () => controller.current?.abort();
-  }, [initialUrl, run]);
+    // Arriving from the homepage with a website already filled in: only the email is left to type.
+    if (initialUrl) emailRef.current?.focus({ preventScroll: true });
+    const onLeave = () => flushLead();
+    window.addEventListener("pagehide", onLeave);
+    return () => {
+      window.removeEventListener("pagehide", onLeave);
+      controller.current?.abort();
+    };
+  }, [initialUrl, flushLead]);
 
   const reset = () => {
+    flushLead();
     controller.current?.abort();
     setPhase({ name: "idle" });
     setSummary(null);
@@ -121,36 +162,84 @@ export function AuditTool({ initialUrl = "" }: { initialUrl?: string }) {
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    void run(value);
+    void run(value, email, phone, hp);
   };
 
   const form = (
     <form onSubmit={onSubmit} noValidate className="print:hidden">
-      <label htmlFor="audit-url" className="sr-only">
-        Website address
-      </label>
-      <div className="flex flex-col gap-2 rounded-[1.75rem] border border-white/15 bg-white/[0.05] p-2 focus-within:border-a1-pink sm:flex-row sm:rounded-full">
-        <input
-          id="audit-url"
-          name="url"
-          type="text"
-          inputMode="url"
-          autoComplete="url"
-          autoCapitalize="none"
-          spellCheck={false}
-          placeholder="yourbusiness.ae"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          aria-invalid={fieldError ? true : undefined}
-          aria-describedby="audit-url-help"
-          className="min-w-0 flex-1 bg-transparent px-5 py-3.5 text-[1.05rem] text-white placeholder:text-a1-stone focus:outline-none"
-        />
-        <button type="submit" className="btn-primary !px-7 !py-4">
+      <div className="grid gap-3 rounded-[1.75rem] border border-white/12 bg-a1-coal/70 p-4 text-left sm:grid-cols-2 sm:p-5">
+        <div className="sm:col-span-2">
+          <label htmlFor="audit-url" className="mb-1.5 block text-[0.8rem] font-semibold text-a1-ash">
+            Website address
+          </label>
+          <input
+            id="audit-url"
+            name="url"
+            type="text"
+            inputMode="url"
+            autoComplete="url"
+            autoCapitalize="none"
+            spellCheck={false}
+            placeholder="yourbusiness.ae"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            aria-invalid={fieldError ? true : undefined}
+            aria-describedby="audit-help"
+            className="w-full rounded-2xl border border-white/15 bg-white/[0.05] px-5 py-3.5 text-[1.02rem] text-white placeholder:text-a1-stone transition focus:border-a1-pink focus:outline-none focus:ring-4 focus:ring-a1-pink/25"
+          />
+        </div>
+        <div>
+          <label htmlFor="audit-email" className="mb-1.5 block text-[0.8rem] font-semibold text-a1-ash">
+            Your email
+          </label>
+          <input
+            ref={emailRef}
+            id="audit-email"
+            name="email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            autoCapitalize="none"
+            spellCheck={false}
+            placeholder="you@yourbusiness.ae"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            aria-invalid={emailError ? true : undefined}
+            aria-describedby="audit-help"
+            className="w-full rounded-2xl border border-white/15 bg-white/[0.05] px-5 py-3.5 text-[1.02rem] text-white placeholder:text-a1-stone transition focus:border-a1-pink focus:outline-none focus:ring-4 focus:ring-a1-pink/25"
+          />
+        </div>
+        <div>
+          <label htmlFor="audit-phone" className="mb-1.5 block text-[0.8rem] font-semibold text-a1-ash">
+            WhatsApp number <span className="font-normal text-a1-stone">(optional)</span>
+          </label>
+          <input
+            id="audit-phone"
+            name="phone"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            placeholder="+971"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="w-full rounded-2xl border border-white/15 bg-white/[0.05] px-5 py-3.5 text-[1.02rem] text-white placeholder:text-a1-stone transition focus:border-a1-pink focus:outline-none focus:ring-4 focus:ring-a1-pink/25"
+          />
+        </div>
+        <input type="text" name="company_site" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} className="hidden" aria-hidden />
+        <button type="submit" className="btn-primary justify-center !py-4 sm:col-span-2">
           Run Free Audit <ArrowRight />
         </button>
       </div>
-      <p id="audit-url-help" role={fieldError ? "alert" : undefined} className={`mt-3 text-[0.86rem] ${fieldError ? "text-[#ff9aa5]" : "text-a1-stone"}`}>
-        {fieldError || "Free. No login or signup. Takes about a minute."}
+      <p id="audit-help" role={fieldError || emailError ? "alert" : undefined} className={`mt-3 text-[0.86rem] ${fieldError || emailError ? "text-[#ff9aa5]" : "text-a1-stone"}`}>
+        {fieldError || emailError || (
+          <>
+            Free. No account or password. By running the audit you agree that A1 Rank may contact you by email or WhatsApp about your results and our services. See our{" "}
+            <Link href="/privacy-policy" className="underline underline-offset-2 hover:text-white">
+              Privacy Policy
+            </Link>
+            .
+          </>
+        )}
       </p>
     </form>
   );

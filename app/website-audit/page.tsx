@@ -6,15 +6,16 @@ import { normaliseUrl } from "@/lib/url";
 
 export const metadata: Metadata = {
   title: "Free Website Audit: Speed, SEO and Accessibility Check",
-  description: "Run a free website audit in about a minute. Real Google PageSpeed Insights scores for performance, SEO, accessibility and best practices on mobile and desktop. No login.",
+  description: "Run a free website audit in about a minute. Real Google PageSpeed Insights scores for performance, SEO, accessibility and best practices on mobile and desktop. No account or password.",
   alternates: { canonical: "/website-audit" },
-  openGraph: { type: "website", url: "/website-audit", title: "Free Website Audit | A1 Rank", description: "Check your website's speed, SEO and accessibility in about a minute. No login or signup.", images: ["/opengraph-image"] },
+  openGraph: { type: "website", url: "/website-audit", title: "Free Website Audit | A1 Rank", description: "Check your website's speed, SEO and accessibility in about a minute. No account or password.", images: ["/opengraph-image"] },
 };
 
 type Props = { searchParams: { url?: string | string[] } };
 
 const FAQS = [
-  { q: "Is the audit really free?", a: "Yes. There is no login, signup or payment. Enter a website address and the report appears on this page." },
+  { q: "Is the audit really free?", a: "Yes. There is no account, password or payment. Enter a website address and your email, and the report appears on this page." },
+  { q: "Why do you ask for my email?", a: "So our team knows who ran the audit and can follow up about the results if that would help. The WhatsApp number is optional. We do not create an account and we do not sell your details." },
   { q: "Where do the scores come from?", a: "From Google PageSpeed Insights, which runs Lighthouse against the live page on Google's servers. We show the scores exactly as Google returns them." },
   { q: "Why do scores change between runs?", a: "Network conditions, server load and third-party scripts vary from one test to the next, so a few points of difference is normal. Look at the pattern over several runs." },
   { q: "What is the difference between mobile and desktop?", a: "The mobile test simulates a mid-range phone on a slower connection, so it is usually the lower score. Most visitors arrive on phones, which makes it the more important one." },
@@ -35,7 +36,7 @@ export default function WebsiteAuditPage({ searchParams }: Props) {
         <div className="wrap relative max-w-[64rem]">
           <div className="mx-auto max-w-[46rem] text-center print:hidden">
             <p className="pill eyebrow text-a1-ash">
-              <span className="h-1.5 w-1.5 rounded-full bg-a1-coral" /> Free · No login · No signup
+              <span className="h-1.5 w-1.5 rounded-full bg-a1-coral" /> Free · No account · No password
             </p>
             <h1 className="mt-6 text-[clamp(2.6rem,7vw,5rem)] font-extrabold leading-[0.98]">
               Free Website <span className="grad-text">Audit</span>
