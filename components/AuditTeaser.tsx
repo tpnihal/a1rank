@@ -35,7 +35,7 @@ export function AuditTeaser() {
           <div className="relative grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
             <Reveal>
               <p className="pill eyebrow text-a1-ash">
-                <span className="h-1.5 w-1.5 rounded-full bg-a1-coral" /> Free · No login · No signup
+                <span className="h-1.5 w-1.5 rounded-full bg-a1-coral" /> Free · No account · No password
               </p>
               <h2 className="section-title mt-5">
                 How does your website <span className="grad-text">really score?</span>
