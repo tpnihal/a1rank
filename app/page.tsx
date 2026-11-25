@@ -1,6 +1,6 @@
 import { AuditTeaser } from "@/components/AuditTeaser";
 import { BlogTeaser } from "@/components/BlogTeaser";
-import { Cta } from "@/components/Cta";
+import { LensCta } from "@/components/LensCta";
 import { Hero } from "@/components/Hero";
 import { Industries } from "@/components/Industries";
 import { Marquee } from "@/components/Marquee";
@@ -18,12 +18,12 @@ export default function HomePage() {
       <Services />
       <Statement />
       <Works />
-      <Packages />
       <Industries />
-      <AuditTeaser />
+      <Packages />
       <Process />
+      <AuditTeaser />
       <BlogTeaser />
-      <Cta />
+      <LensCta />
     </>
   );
 }

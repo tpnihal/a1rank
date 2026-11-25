@@ -16,15 +16,15 @@ export function Industries() {
             A clinic, a restaurant and a property developer win customers in different ways. We shape the channel mix around
             how buyers in your industry actually decide.
           </p>
-          <Link href="/contact" className="btn-ghost-dark mt-7">
-            Talk about your industry <ArrowUpRight />
+          <Link href="/industries" className="btn-ghost-dark mt-7">
+            All industries <ArrowUpRight />
           </Link>
         </Reveal>
 
         <ul className="border-t border-black/10">
           {INDUSTRIES.map((ind, i) => (
             <Reveal as="li" key={ind.name} delay={(i % 4) * 0.04} y={16}>
-              <div className="group relative grid items-center gap-x-6 gap-y-2 overflow-hidden border-b border-black/10 px-1 py-6 transition-colors duration-300 hover:text-white sm:grid-cols-[2.5rem_1fr_auto] md:px-4">
+              <Link href={`/industries/${ind.slug}`} className="group relative grid items-center gap-x-6 gap-y-2 overflow-hidden border-b border-black/10 px-1 py-6 transition-colors duration-300 hover:text-white sm:grid-cols-[2.5rem_1fr_auto] md:px-4">
                 <span className="absolute inset-0 origin-left scale-x-0 bg-a1-gradient transition-transform duration-500 ease-out group-hover:scale-x-100" aria-hidden />
                 <span className="relative hidden text-a1-pink transition group-hover:translate-x-1 group-hover:text-white sm:block">
                   <ArrowUpRight className="h-5 w-5" />
@@ -40,7 +40,7 @@ export function Industries() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </Link>
             </Reveal>
           ))}
         </ul>

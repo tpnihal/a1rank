@@ -41,7 +41,8 @@ export function Services() {
         <ul className="grid grid-flow-dense grid-cols-1 gap-3.5 sm:auto-rows-[minmax(13.5rem,auto)] sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s, i) => (
             <Reveal as="li" key={s.slug} delay={(i % 4) * 0.06} className={SPAN[s.span]}>
-              <article
+              <Link
+                href={`/services#${s.slug}`}
                 onMouseMove={track}
                 className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-a1-coal p-6 transition duration-300 hover:-translate-y-1 hover:border-white/25"
               >
@@ -54,13 +55,15 @@ export function Services() {
                   <span className="grid h-11 w-11 place-items-center rounded-2xl bg-a1-gradient text-white shadow-glow">
                     <ServiceIcon name={s.icon} />
                   </span>
-                  <span className="eyebrow text-a1-stone transition group-hover:text-a1-coral">{s.label}</span>
+                  <span className="eyebrow flex items-center gap-1.5 text-a1-stone transition group-hover:text-a1-coral">
+                    {s.label} <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition group-hover:opacity-100" />
+                  </span>
                 </div>
                 <div className="relative mt-auto pt-6 sm:pt-10">
                   <h3 className={`font-bold leading-[1.12] ${s.span === "base" ? "text-[1.22rem]" : "text-[1.5rem] md:text-[1.7rem]"}`}>{s.title}</h3>
                   <p className="mt-2.5 text-[0.92rem] text-a1-ash">{s.blurb}</p>
                 </div>
-              </article>
+              </Link>
             </Reveal>
           ))}
         </ul>
@@ -72,8 +75,8 @@ export function Services() {
               {t}
             </span>
           ))}
-          <Link href="/contact" className="ml-auto inline-flex items-center gap-2 text-[0.92rem] font-bold text-white hover:text-a1-coral">
-            Tell us what you need <ArrowUpRight />
+          <Link href="/services" className="ml-auto inline-flex items-center gap-2 text-[0.92rem] font-bold text-white hover:text-a1-coral">
+            Explore all services <ArrowUpRight />
           </Link>
         </Reveal>
       </div>

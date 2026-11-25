@@ -42,15 +42,17 @@ Gradient: `linear-gradient(135deg, #EF5245, #EC2563)`. The vector logo mark (`co
 
 ## Structure
 
-- `app/` routes: homepage, `/contact` (enquiry form, `?package=go|pro|pro-max|grox` prefills the package),
+- `app/` routes: homepage, `/services` (all ten services on one page, each with an anchor such as
+  `/services#meta-google-ads`), `/about`, `/works`, `/industries` and `/industries/[slug]`, `/privacy-policy`, `/terms`,
+  `/contact` (enquiry form, `?package=go|pro|pro-max|grox` prefills the package),
   `/website-audit` (placeholder until Stage 4), `/api/enquiry`
 - `components/` page sections and UI
 - `lib/site.ts` all site content: services, packages, industries, works, navigation
 
 ## Build stages
 
-1. Design system, navigation, footer and homepage (this stage)
-2. Services, About Us, Our Works and Industries pages
+1. Design system, navigation, footer and homepage (done)
+2. Services, About Us, Our Works and Industries pages (done)
 3. Blog system with categories and articles
 4. Free public Website Audit tool
 5. SEO, accessibility, performance, testing and deployment
@@ -58,5 +60,8 @@ Gradient: `linear-gradient(135deg, #EF5245, #EC2563)`. The vector logo mark (`co
 ## Content still to confirm
 
 - Package inclusions in `lib/site.ts` (`PACKAGES`) must match the official A1 Rank pricing reference.
-- Works in `lib/site.ts` (`WORKS`) are concept showcases, to be replaced with real client projects.
+- Works in `lib/site.ts` (`WORKS`) are placeholder showcases, to be replaced with real client projects.
+- Every photo in `public/images/stock/` is a temporary Unsplash stock image. Replace with A1 Rank's own images
+  (keep the same file names, or update the `image` fields in `lib/site.ts`).
+- `/privacy-policy` and `/terms` are draft wording and need a review before launch.
 - Industries list (`INDUSTRIES`) to be confirmed.

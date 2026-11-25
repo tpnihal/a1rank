@@ -11,15 +11,12 @@ export const SITE = {
   location: "Dubai, UAE",
 } as const;
 
-/**
- * Stage 1 ships the homepage, so section links point at homepage anchors.
- * Stages 2 to 4 replace these with the real routes (/services, /works, ...).
- */
+/** Blogs points at the homepage section until the blog ships in Stage 3. */
 export const NAV = [
-  { label: "Services", href: "/#services" },
-  { label: "About Us", href: "/#about" },
-  { label: "Our Works", href: "/#works" },
-  { label: "Industries", href: "/#industries" },
+  { label: "Services", href: "/services" },
+  { label: "About Us", href: "/about" },
+  { label: "Our Works", href: "/works" },
+  { label: "Industries", href: "/industries" },
   { label: "Blogs", href: "/#blogs" },
 ] as const;
 
@@ -37,6 +34,10 @@ export type IconKey =
 
 export type Service = {
   slug: string;
+  /** Placeholder stock photo (Unsplash). Replace with A1 Rank imagery. */
+  image: string;
+  menuTitle: string;
+  menuLine: string;
   label: string;
   title: string;
   blurb: string;
@@ -48,6 +49,9 @@ export type Service = {
 export const SERVICES: Service[] = [
   {
     slug: "digital-marketing-strategy",
+    image: "/images/stock/strategy-desk.jpg",
+    menuTitle: "Strategy & Growth",
+    menuLine: "A 90-day plan tied to leads and sales",
     label: "Strategy",
     title: "Digital Marketing Strategy & Growth",
     blurb: "Market and competitor research, funnel planning and a 90-day roadmap tied to leads and sales.",
@@ -56,6 +60,9 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "social-media-management",
+    image: "/images/stock/team-desk.jpg",
+    menuTitle: "Social Media Management",
+    menuLine: "Content, reels and community, every month",
     label: "Social",
     title: "Social Media Management",
     blurb: "Instagram, Facebook and LinkedIn: content calendars, posting and community replies.",
@@ -64,6 +71,9 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "graphic-design-branding",
+    image: "/images/stock/brand-swatches.jpg",
+    menuTitle: "Branding & Graphic Design",
+    menuLine: "An identity people recognise instantly",
     label: "Design",
     title: "Premium Graphic Design & Branding",
     blurb: "Logos, brand guidelines, social templates, brochures and packaging.",
@@ -72,6 +82,9 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "website-design-development",
+    image: "/images/stock/code-laptop.jpg",
+    menuTitle: "Website Design & Development",
+    menuLine: "Fast sites built to bring enquiries in",
     label: "Web",
     title: "Website Design & Development",
     blurb: "Fast, mobile-first websites and online stores built to turn visitors into enquiries.",
@@ -80,6 +93,9 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "seo-google-business-profile",
+    image: "/images/stock/search-analytics.jpg",
+    menuTitle: "SEO & Google Business Profile",
+    menuLine: "Get found on Search, Maps and AI answers",
     label: "Search",
     title: "SEO & Google Business Profile",
     blurb: "Technical and on-page SEO, local map rankings, reviews and visibility in AI search answers.",
@@ -88,6 +104,9 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "meta-google-ads",
+    image: "/images/stock/dashboard-laptop.jpg",
+    menuTitle: "Meta Ads & Google Ads",
+    menuLine: "Campaigns managed for cost per lead",
     label: "Ads",
     title: "Meta Ads & Google Ads",
     blurb: "Campaign setup, creative testing and daily optimisation for a lower cost per lead.",
@@ -96,6 +115,9 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "photography-videography",
+    image: "/images/stock/photographer.jpg",
+    menuTitle: "Photography & Videography",
+    menuLine: "Real shoots across Dubai",
     label: "Production",
     title: "Photography & Videography",
     blurb: "Product, food, property and team shoots across Dubai, edited for every platform.",
@@ -104,6 +126,9 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "ai-video-creative-content",
+    image: "/images/stock/video-editing.jpg",
+    menuTitle: "AI Video & Creative Content",
+    menuLine: "More video, made faster",
     label: "AI Video",
     title: "AI Video & Creative Content",
     blurb: "Reels, ad creatives and AI-generated video produced quickly without losing the craft.",
@@ -112,6 +137,9 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "ai-agents-automation",
+    image: "/images/stock/ai-robot.jpg",
+    menuTitle: "AI Agents & Automation",
+    menuLine: "Reply in seconds, follow up automatically",
     label: "Automation",
     title: "AI Agents & Business Automation",
     blurb: "Chat agents, lead routing and n8n workflows that answer customers and save hours every week.",
@@ -120,6 +148,9 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "analytics-reporting-lead-generation",
+    image: "/images/stock/dashboard-dark.jpg",
+    menuTitle: "Analytics & Lead Generation",
+    menuLine: "Know where every lead came from",
     label: "Data",
     title: "Analytics, Reporting & Lead Generation",
     blurb: "GA4, pixel and conversion tracking with a monthly report you can actually read.",
@@ -230,12 +261,13 @@ export type Work = {
   category: WorkCategory;
   summary: string;
   tags: string[];
-  visual: "browser" | "phones" | "chart" | "flow" | "brand" | "ad";
+  /** Placeholder stock photo (Unsplash). Replace with the real project screenshot. */
+  image: string;
 };
 
 /**
- * Concept showcases that demonstrate the layout. Replace with real A1 Rank
- * client projects (name, screenshots, results) before launch.
+ * Placeholder showcases with stock photos that demonstrate the layout.
+ * Replace with real A1 Rank client projects (name, screenshots, results) before launch.
  */
 export const WORKS: Work[] = [
   {
@@ -244,7 +276,7 @@ export const WORKS: Work[] = [
     category: "Websites",
     summary: "Listing search, enquiry buttons on every property and Arabic / English pages.",
     tags: ["Website", "Lead capture"],
-    visual: "browser",
+    image: "/images/stock/dubai-skyline.jpg",
   },
   {
     title: "Restaurant launch campaign",
@@ -252,15 +284,15 @@ export const WORKS: Work[] = [
     category: "Social Media",
     summary: "Reels, food photography and a content calendar built around opening month.",
     tags: ["Instagram", "Reels"],
-    visual: "phones",
+    image: "/images/stock/restaurant-dining.jpg",
   },
   {
     title: "Clinic local search programme",
     sector: "Healthcare · UAE",
     category: "SEO",
     summary: "Google Business Profile, service pages and reviews tuned for near-me searches.",
-    tags: ["Local SEO", "GBP"],
-    visual: "chart",
+    tags: ["Local SEO", "Google Business Profile"],
+    image: "/images/stock/dental-clinic.jpg",
   },
   {
     title: "Enquiry assistant on WhatsApp",
@@ -268,7 +300,7 @@ export const WORKS: Work[] = [
     category: "AI Automation",
     summary: "An AI agent that answers questions, qualifies leads and books calls through n8n.",
     tags: ["AI agent", "n8n"],
-    visual: "flow",
+    image: "/images/stock/ai-robot.jpg",
   },
   {
     title: "Studio brand identity",
@@ -276,7 +308,7 @@ export const WORKS: Work[] = [
     category: "Branding",
     summary: "Logo, colour system, signage and a full set of social templates.",
     tags: ["Identity", "Templates"],
-    visual: "brand",
+    image: "/images/stock/brand-swatches.jpg",
   },
   {
     title: "Store growth campaigns",
@@ -284,7 +316,23 @@ export const WORKS: Work[] = [
     category: "Ads",
     summary: "Full-funnel Meta and Google campaigns with AI video creatives.",
     tags: ["Meta Ads", "Google Ads"],
-    visual: "ad",
+    image: "/images/stock/retail-store.jpg",
+  },
+  {
+    title: "Resort direct-booking website",
+    sector: "Hospitality · UAE",
+    category: "Websites",
+    summary: "A fast, visual site with clear offers and a simple path to book direct.",
+    tags: ["Website", "Bookings"],
+    image: "/images/stock/resort-pool.jpg",
+  },
+  {
+    title: "Search growth programme",
+    sector: "Education · UAE",
+    category: "SEO",
+    summary: "Course pages and articles built around what learners search for.",
+    tags: ["SEO", "Content"],
+    image: "/images/stock/search-analytics.jpg",
   },
 ];
 
@@ -299,14 +347,14 @@ export const WORK_CATEGORIES: ("All" | WorkCategory)[] = [
 ];
 
 export const INDUSTRIES = [
-  { name: "Real Estate", need: "Listings that generate qualified buyer and tenant enquiries.", services: ["Websites", "Meta Ads", "Video"] },
-  { name: "Restaurants & Cafés", need: "Full tables from Instagram, Google Maps and delivery apps.", services: ["Social", "Photography", "Local SEO"] },
-  { name: "Healthcare & Clinics", need: "Patients who find you first and trust you before they call.", services: ["Local SEO", "Websites", "Google Ads"] },
-  { name: "E-commerce & Retail", need: "Stores that convert, with ads that pay for themselves.", services: ["Online stores", "Ads", "AI video"] },
-  { name: "Beauty & Salons", need: "A booked calendar built on reels, reviews and repeat clients.", services: ["Social", "Branding", "Automation"] },
-  { name: "Construction & Contracting", need: "Credibility online that wins tenders and project leads.", services: ["Websites", "SEO", "Branding"] },
-  { name: "Education & Training", need: "More enrolments from parents and learners searching now.", services: ["Google Ads", "SEO", "Lead funnels"] },
-  { name: "Hospitality & Tourism", need: "Direct bookings from guests planning their Dubai trip.", services: ["Video", "Social", "Websites"] },
+  { slug: "real-estate", image: "/images/stock/house-keys.jpg", name: "Real Estate", need: "Listings that generate qualified buyer and tenant enquiries.", services: ["Websites", "Meta Ads", "Video"] },
+  { slug: "restaurants-cafes", image: "/images/stock/restaurant-interior.jpg", name: "Restaurants & Cafés", need: "Full tables from Instagram, Google Maps and delivery apps.", services: ["Social", "Photography", "Local SEO"] },
+  { slug: "healthcare-clinics", image: "/images/stock/dental-clinic.jpg", name: "Healthcare & Clinics", need: "Patients who find you first and trust you before they call.", services: ["Local SEO", "Websites", "Google Ads"] },
+  { slug: "ecommerce-retail", image: "/images/stock/retail-store.jpg", name: "E-commerce & Retail", need: "Stores that convert, with ads that pay for themselves.", services: ["Online stores", "Ads", "AI video"] },
+  { slug: "beauty-salons", image: "/images/stock/beauty-hair.jpg", name: "Beauty & Salons", need: "A booked calendar built on reels, reviews and repeat clients.", services: ["Social", "Branding", "Automation"] },
+  { slug: "construction-contracting", image: "/images/stock/construction-site.jpg", name: "Construction & Contracting", need: "Credibility online that wins tenders and project leads.", services: ["Websites", "SEO", "Branding"] },
+  { slug: "education-training", image: "/images/stock/students-laptops.jpg", name: "Education & Training", need: "More enrolments from parents and learners searching now.", services: ["Google Ads", "SEO", "Lead funnels"] },
+  { slug: "hospitality-tourism", image: "/images/stock/resort-pool.jpg", name: "Hospitality & Tourism", need: "Direct bookings from guests planning their Dubai trip.", services: ["Video", "Social", "Websites"] },
 ];
 
 export const PROCESS = [
