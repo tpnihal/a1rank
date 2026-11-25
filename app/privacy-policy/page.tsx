@@ -31,7 +31,7 @@ export default function PrivacyPolicyPage() {
           body: (
             <ul>
               <li>Details you send through the enquiry form, such as your name, email address, company, website and message.</li>
-              <li>The website address you enter into the free Website Audit tool.</li>
+              <li>The website address, email address and, if you add it, WhatsApp number you enter into the free Website Audit tool, together with the audit scores.</li>
               <li>Basic technical data that any website receives, such as browser type and pages visited.</li>
             </ul>
           ),
@@ -42,6 +42,7 @@ export default function PrivacyPolicyPage() {
             <ul>
               <li>To reply to your enquiry and prepare a proposal.</li>
               <li>To run the audit you asked for and show you the results.</li>
+              <li>To know who ran an audit, so our team can contact you by email or WhatsApp about the results and our services. You can ask us to stop at any time.</li>
               <li>To keep the website secure and improve how it works.</li>
             </ul>
           ),
@@ -54,13 +55,13 @@ export default function PrivacyPolicyPage() {
           heading: "Service providers",
           body: (
             <p>
-              We use trusted providers to host the website, deliver enquiry emails and measure page performance. The audit tool sends the address you enter to Google PageSpeed Insights to produce the report. These providers process data only to deliver their service.
+              We use trusted providers to host the website, deliver enquiry emails, store audit contact details (Google Sheets) and measure page performance. The audit tool sends the address you enter to Google PageSpeed Insights to produce the report. Your email address is not sent to Google. These providers process data only to deliver their service.
             </p>
           ),
         },
         {
           heading: "Keeping and deleting your information",
-          body: <p>We keep enquiry details for as long as needed to respond and to manage our relationship with you. You can ask us to correct or delete your information at any time by emailing {mail}.</p>,
+          body: <p>We keep enquiry and audit contact details for as long as needed to respond and to manage our relationship with you. You can ask us to correct or delete your information at any time by emailing {mail}.</p>,
         },
         {
           heading: "Changes to this policy",
