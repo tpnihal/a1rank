@@ -397,30 +397,30 @@ export type Launch = {
   url?: string;
 };
 
-/**
- * The three newest finished websites, shown as stacked cards on the homepage.
- * These are placeholders: replace with real client sites (screenshot, name and live address).
- */
+/** The three newest finished websites, shown as stacked cards on the homepage. */
 export const LAUNCHES: Launch[] = [
   {
-    title: "Property showcase website",
-    sector: "Real estate · Dubai",
-    summary: "Listing search, enquiry buttons on every property and Arabic / English pages.",
-    image: "/images/stock/dubai-skyline.jpg",
-    display: "sample-project.ae",
-  },
-  {
-    title: "Restaurant booking website",
+    title: "Al Rawabi Dairy",
     sector: "Food & beverage · Dubai",
-    summary: "Menu, table booking and WhatsApp ordering in a site that loads in under two seconds.",
-    image: "/images/stock/restaurant-interior.jpg",
-    display: "sample-project.ae",
+    summary: "Brand website for a Dubai dairy, with product pages, the company story and a sustainability section.",
+    image: "/images/works/alrawabidairy.jpg",
+    display: "alrawabidairy.com",
+    url: "https://alrawabidairy.com",
   },
   {
-    title: "Clinic appointment website",
-    sector: "Healthcare · Dubai",
-    summary: "Treatment pages, doctor profiles and online appointment requests.",
-    image: "/images/stock/dental-clinic.jpg",
-    display: "sample-project.ae",
+    title: "Regal Sky Gold & Jewellery",
+    sector: "Gold trading · Dubai Gold Souq",
+    summary: "Website for a gold bullion trader and scrap gold buyer, with product pages, live rates and WhatsApp contact.",
+    image: "/images/works/regalskygold.jpg",
+    display: "regalskygold.com",
+    url: "https://regalskygold.com",
+  },
+  {
+    title: "Rogers Denim",
+    sector: "Fashion · Online store",
+    summary: "Online clothing store with category browsing, collections, new arrivals and WhatsApp contact.",
+    image: "/images/works/rogersdenim.jpg",
+    display: "rogersdenim.com",
+    url: "https://rogersdenim.com",
   },
 ];
