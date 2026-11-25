@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "Blog: Digital Marketing Advice for UAE Businesses",
   description: "Practical articles on digital marketing, social media, websites, SEO and GEO, AI automation, business growth and branding from the A1 Rank team in Dubai.",
   alternates: { canonical: "/blog" },
-  openGraph: { type: "website", url: "/blog", title: "A1 Rank Blog", description: "Practical marketing advice for UAE businesses." },
+  openGraph: { type: "website", url: "/blog", title: "A1 Rank Blog", description: "Practical marketing advice for UAE businesses.", images: ["/opengraph-image"] },
 };
 
 export default function BlogPage() {
@@ -41,6 +41,7 @@ export default function BlogPage() {
       <section className="bg-a1-paper py-12 text-a1-ink md:py-16">
         <div className="wrap">
           <BlogCategories />
+          <h2 className="sr-only">Latest articles</h2>
           <div className="mt-10 rounded-[2rem] border border-black/[0.07] bg-white p-4 md:p-6">
             <ArticleCard article={latest} large />
           </div>

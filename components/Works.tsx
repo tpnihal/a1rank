@@ -148,6 +148,7 @@ export function WorksGrid() {
   return (
     <section className="bg-a1-paper py-14 text-a1-ink md:py-20">
       <div className="wrap">
+        <h2 className="sr-only">Projects</h2>
         <div className="-mx-5 mb-10 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] lg:mx-0 lg:flex-wrap lg:px-0" role="group" aria-label="Filter works by type">
           {WORK_CATEGORIES.map((c) => (
             <button

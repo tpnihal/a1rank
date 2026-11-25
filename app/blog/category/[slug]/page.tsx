@@ -24,7 +24,7 @@ export function generateMetadata({ params }: Props): Metadata {
     title: `${c.name} Articles`,
     description: `${c.text} Articles from the A1 Rank team in Dubai.`,
     alternates: { canonical: path },
-    openGraph: { type: "website", url: path, title: `${c.name} | A1 Rank Blog`, description: c.text },
+    openGraph: { type: "website", url: path, title: `${c.name} | A1 Rank Blog`, description: c.text, images: ["/opengraph-image"] },
   };
 }
 
@@ -39,6 +39,7 @@ export default function BlogCategoryPage({ params }: Props) {
       <section className="bg-a1-paper py-12 text-a1-ink md:py-16">
         <div className="wrap">
           <BlogCategories active={c.slug} />
+          <h2 className="sr-only">Articles</h2>
           <ul className="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
             {list.map((a) => (
               <li key={a.slug}>

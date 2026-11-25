@@ -149,3 +149,14 @@
     min-height: 0 !important;
   }
 }
+
+/* Contrast: muted and accent text are tuned per background so small labels meet WCAG AA. */
+.text-a1-stone {
+  color: #968c8f;
+}
+.text-a1-ink .text-a1-stone {
+  color: #6a5f62;
+}
+.text-a1-ink .text-a1-pink {
+  color: #c9154d;
+}

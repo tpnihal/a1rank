@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { ArrowRight } from "./Icons";
 import { LogoMark } from "./Logo";
 
@@ -12,7 +13,40 @@ const StaticMark = () => (
   </div>
 );
 
-const HeroScene = dynamic(() => import("./HeroScene"), { ssr: false, loading: () => null });
+const HeroScene = dynamic(() => import("./HeroScene"), { ssr: false, loading: () => <StaticMark /> });
+
+/**
+ * The 3D scene is the heaviest thing on the site, so it loads only on larger, capable devices
+ * and only once the page is idle. Phones and low-power devices keep the light static mark.
+ */
+function HeroVisual() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
+    const capable =
+      window.matchMedia("(min-width: 1024px)").matches &&
+      (nav.hardwareConcurrency ?? 8) >= 4 &&
+      (nav.deviceMemory ?? 8) >= 4 &&
+      !nav.connection?.saveData;
+    if (!capable) return;
+    let idle = 0;
+    let usedIdle = false;
+    const start = () => {
+      usedIdle = typeof window.requestIdleCallback === "function";
+      idle = usedIdle ? window.requestIdleCallback(() => setReady(true), { timeout: 2500 }) : window.setTimeout(() => setReady(true), 600);
+    };
+    if (document.readyState === "complete") start();
+    else window.addEventListener("load", start, { once: true });
+    return () => {
+      window.removeEventListener("load", start);
+      if (usedIdle) window.cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
+    };
+  }, []);
+
+  return ready ? <HeroScene fallback={<StaticMark />} /> : <StaticMark />;
+}
 
 const FACTS = [
   { k: "10", v: "services under one roof" },
@@ -40,7 +74,7 @@ export function Hero() {
       <div className="absolute -right-40 -top-40 h-[46rem] w-[46rem] rounded-full bg-[radial-gradient(circle,rgba(236,37,99,0.34),rgba(239,82,69,0.1)_45%,transparent_70%)]" aria-hidden />
       <div className="absolute -bottom-52 -left-40 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(239,82,69,0.18),transparent_65%)]" aria-hidden />
 
-      <HeroScene fallback={<StaticMark />} />
+      <HeroVisual />
 
       <div className="wrap relative z-10 flex min-h-[100svh] flex-col justify-end pb-10 pt-[23rem] lg:min-h-[max(100svh,46rem)] lg:justify-center lg:pb-36 lg:pt-36">
         <div className="max-w-[44rem]">

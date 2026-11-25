@@ -27,7 +27,7 @@ export function generateMetadata({ params }: Props): Metadata {
     title: `Digital Marketing for ${ind.name} in the UAE`,
     description,
     alternates: { canonical: `/industries/${ind.slug}` },
-    openGraph: { title: `Digital Marketing for ${ind.name} | A1 Rank`, description, url: `/industries/${ind.slug}` },
+    openGraph: { title: `Digital Marketing for ${ind.name} | A1 Rank`, description, url: `/industries/${ind.slug}`, images: [ind.image] },
   };
 }
 

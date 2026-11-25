@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Free Website Audit: Speed, SEO and Accessibility Check",
   description: "Run a free website audit in about a minute. Real Google PageSpeed Insights scores for performance, SEO, accessibility and best practices on mobile and desktop. No login.",
   alternates: { canonical: "/website-audit" },
-  openGraph: { type: "website", url: "/website-audit", title: "Free Website Audit | A1 Rank", description: "Check your website's speed, SEO and accessibility in about a minute. No login or signup." },
+  openGraph: { type: "website", url: "/website-audit", title: "Free Website Audit | A1 Rank", description: "Check your website's speed, SEO and accessibility in about a minute. No login or signup.", images: ["/opengraph-image"] },
 };
 
 type Props = { searchParams: { url?: string | string[] } };
