@@ -1,8 +1,11 @@
+import Link from "next/link";
+import { ARTICLES } from "@/lib/blog";
 import { BLOG_CATEGORIES } from "@/lib/site";
-import { LogoMark } from "./Logo";
+import { ArticleCard } from "./ArticleCard";
+import { ArrowUpRight } from "./Icons";
 import { Reveal } from "./Reveal";
 
-/** Stage 1 introduces the blog topics. Stage 3 replaces this with the latest articles. */
+/** Homepage blog band: the three newest articles and links to every category. */
 export function BlogTeaser() {
   return (
     <section id="blogs" className="section bg-white text-a1-ink">
@@ -15,28 +18,26 @@ export function BlogTeaser() {
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="eyebrow rounded-full border border-black/10 px-3.5 py-2 text-a1-stone">Articles publishing soon</p>
+            <Link href="/blog" className="inline-flex items-center gap-2 font-bold hover:text-a1-pink">
+              All articles <ArrowUpRight />
+            </Link>
           </Reveal>
         </div>
-        <ul className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
-          {BLOG_CATEGORIES.map((c, i) => (
-            <Reveal as="li" key={c.slug} delay={(i % 4) * 0.05} className={i === 0 ? "sm:col-span-2 lg:col-span-1" : ""}>
-              <div className="group flex h-full flex-col justify-between gap-6 rounded-3xl sm:min-h-[10.5rem] border border-black/[0.08] bg-a1-paper p-6 transition duration-300 hover:-translate-y-1 hover:bg-a1-ink hover:text-white">
-                <LogoMark className="h-5 w-auto self-start" />
-                <div>
-                  <h3 className="text-[1.18rem] font-bold leading-tight">{c.name}</h3>
-                  <p className="mt-1.5 text-[0.88rem] text-a1-stone transition-colors group-hover:text-a1-ash">{c.text}</p>
-                </div>
-              </div>
+        <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          {ARTICLES.slice(0, 3).map((a, i) => (
+            <Reveal as="li" key={a.slug} delay={i * 0.07} className={i === 2 ? "sm:max-lg:hidden" : ""}>
+              <ArticleCard article={a} />
             </Reveal>
           ))}
-          <Reveal as="li" delay={0.15}>
-            <div className="flex h-full flex-col justify-between gap-6 rounded-3xl bg-a1-gradient sm:min-h-[10.5rem] p-6 text-white">
-              <span className="font-mono text-[0.74rem]">7 topics</span>
-              <p className="font-display text-[1.18rem] font-bold leading-tight">Written by the team that runs the campaigns.</p>
-            </div>
-          </Reveal>
         </ul>
+        <Reveal className="mt-10 flex flex-wrap items-center gap-2 border-t border-black/10 pt-7">
+          <span className="eyebrow mr-2 text-a1-stone">Topics</span>
+          {BLOG_CATEGORIES.map((c) => (
+            <Link key={c.slug} href={`/blog/category/${c.slug}`} className="rounded-full border border-black/10 bg-a1-paper px-3.5 py-1.5 text-[0.84rem] font-semibold transition hover:border-a1-ink hover:bg-a1-ink hover:text-white">
+              {c.name}
+            </Link>
+          ))}
+        </Reveal>
       </div>
     </section>
   );

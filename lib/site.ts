@@ -11,13 +11,12 @@ export const SITE = {
   location: "Dubai, UAE",
 } as const;
 
-/** Blogs points at the homepage section until the blog ships in Stage 3. */
 export const NAV = [
   { label: "Services", href: "/services" },
   { label: "About Us", href: "/about" },
   { label: "Our Works", href: "/works" },
   { label: "Industries", href: "/industries" },
-  { label: "Blogs", href: "/#blogs" },
+  { label: "Blogs", href: "/blog" },
 ] as const;
 
 export type IconKey =

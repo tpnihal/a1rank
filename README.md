@@ -44,16 +44,19 @@ Gradient: `linear-gradient(135deg, #EF5245, #EC2563)`. The vector logo mark (`co
 
 - `app/` routes: homepage, `/services` (all ten services on one page, each with an anchor such as
   `/services#meta-google-ads`), `/about`, `/works`, `/industries` and `/industries/[slug]`, `/privacy-policy`, `/terms`,
+  `/blog`, `/blog/category/[slug]`, `/blog/[slug]`,
   `/contact` (enquiry form, `?package=go|pro|pro-max|grox` prefills the package),
   `/website-audit` (placeholder until Stage 4), `/api/enquiry`
 - `components/` page sections and UI
 - `lib/site.ts` all site content: services, packages, industries, works, navigation
+- `lib/blog/articles/*.ts` blog articles, one file per category. To add an article, append an object to the
+  category file: it appears on `/blog`, its category page and the homepage automatically
 
 ## Build stages
 
 1. Design system, navigation, footer and homepage (done)
 2. Services, About Us, Our Works and Industries pages (done)
-3. Blog system with categories and articles
+3. Blog system with categories and articles (done)
 4. Free public Website Audit tool
 5. SEO, accessibility, performance, testing and deployment
 
