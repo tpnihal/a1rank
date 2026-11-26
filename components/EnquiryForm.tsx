@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { INTERESTS, PACKAGES, SITE } from "@/lib/site";
+import { INTERESTS, PACKAGES, SITE, WEBSITE_INTEREST, WEBSITE_PLANS } from "@/lib/site";
 import { ArrowRight, Check } from "./Icons";
 
 type Status = { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind: "error"; message: string };
 
 type Props = {
-  /** Package slug to preselect, e.g. from /contact?package=pro */
+  /** Monthly package name to preselect, e.g. from /contact?package=pro */
   defaultPackage?: string;
+  /** Website plan name to preselect, e.g. from /contact?plan=business. Wins over defaultPackage. */
+  defaultPlan?: string;
   /** Website to prefill, e.g. when coming from the audit tool */
   defaultWebsite?: string;
   /** Topic line stored with the enquiry */
@@ -16,10 +18,27 @@ type Props = {
   idPrefix?: string;
 };
 
-export function EnquiryForm({ defaultPackage = "", defaultWebsite = "", topic = "General enquiry", idPrefix = "enq" }: Props) {
+export function EnquiryForm({ defaultPackage = "", defaultPlan = "", defaultWebsite = "", topic = "General enquiry", idPrefix = "enq" }: Props) {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  // A website project and a monthly marketing package are separate enquiries:
+  // the Website chip and the marketing chips are never selected together, and
+  // the package list follows whichever side is chosen.
+  const [interests, setInterests] = useState<string[]>(defaultPlan ? [WEBSITE_INTEREST] : []);
+  const [pkg, setPkg] = useState(defaultPlan || defaultPackage);
+  const websiteMode = interests.includes(WEBSITE_INTEREST);
   const id = (name: string) => `${idPrefix}-${name}`;
+
+  function toggleInterest(label: string) {
+    const wasWebsite = websiteMode;
+    let next: string[];
+    if (interests.includes(label)) next = interests.filter((i) => i !== label);
+    else if (label === WEBSITE_INTEREST) next = [WEBSITE_INTEREST];
+    else next = [...interests.filter((i) => i !== WEBSITE_INTEREST), label];
+    setInterests(next);
+    // Switching between website and marketing clears a choice from the other list.
+    if (next.includes(WEBSITE_INTEREST) !== wasWebsite) setPkg("");
+  }
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -27,14 +46,15 @@ export function EnquiryForm({ defaultPackage = "", defaultWebsite = "", topic = 
     const data = new FormData(form);
     const payload = {
       type: "enquiry",
-      topic,
+      // The page topic names the prefilled plan or package; drop it if the visitor changed that choice.
+      topic: (defaultPlan || defaultPackage) && pkg !== (defaultPlan || defaultPackage) ? "General enquiry" : topic,
       name: String(data.get("name") ?? "").trim(),
       company: String(data.get("company") ?? "").trim(),
       email: String(data.get("email") ?? "").trim(),
       phone: String(data.get("phone") ?? "").trim(),
       website: String(data.get("website") ?? "").trim(),
-      package: String(data.get("package") ?? ""),
-      interests: data.getAll("interests").map(String),
+      package: pkg,
+      interests,
       message: String(data.get("message") ?? "").trim(),
       hp: String(data.get("fax") ?? ""),
     };
@@ -59,6 +79,8 @@ export function EnquiryForm({ defaultPackage = "", defaultWebsite = "", topic = 
       if (!res.ok) throw new Error(body.error || "Something went wrong sending your enquiry.");
       setStatus({ kind: "sent" });
       form.reset();
+      setInterests([]);
+      setPkg("");
     } catch (err) {
       setStatus({ kind: "error", message: err instanceof Error ? err.message : "Something went wrong sending your enquiry." });
     }
@@ -129,26 +151,33 @@ export function EnquiryForm({ defaultPackage = "", defaultWebsite = "", topic = 
         <div className="flex flex-wrap gap-2">
           {INTERESTS.map((label, i) => (
             <label key={label} className="cursor-pointer">
-              <input type="checkbox" name="interests" value={label} id={id(`int-${i}`)} className="peer sr-only" />
+              <input type="checkbox" name="interests" value={label} id={id(`int-${i}`)} checked={interests.includes(label)} onChange={() => toggleInterest(label)} className="peer sr-only" />
               <span className="inline-block rounded-full border border-white/15 px-3.5 py-2 text-[0.86rem] font-semibold transition peer-checked:border-transparent peer-checked:bg-a1-gradient peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-a1-coral hover:border-white/40">
                 {label}
               </span>
             </label>
           ))}
         </div>
+        <p className="mt-2 text-[0.8rem] text-a1-stone">A website project and monthly marketing are quoted separately, so choose one or the other here.</p>
       </fieldset>
 
       <div className="flex flex-col gap-1.5 sm:col-span-2">
         <label htmlFor={id("package")} className="text-[0.82rem] font-semibold text-a1-ash">
-          Package
+          {websiteMode ? "Website plan" : "Package"}
         </label>
-        <select id={id("package")} name="package" defaultValue={defaultPackage} className="field appearance-none">
+        <select id={id("package")} name="package" value={pkg} onChange={(e) => setPkg(e.target.value)} className="field appearance-none">
           <option value="">Not sure yet, recommend one</option>
-          {PACKAGES.map((p) => (
-            <option key={p.slug} value={p.name}>
-              {p.name} · {p.from ? "from " : ""}AED {p.price.toLocaleString("en-US")}/month
-            </option>
-          ))}
+          {websiteMode
+            ? WEBSITE_PLANS.map((p) => (
+                <option key={p.slug} value={p.name}>
+                  {p.name} · {p.from ? "from " : ""}AED {p.price.toLocaleString("en-US")} one-time
+                </option>
+              ))
+            : PACKAGES.map((p) => (
+                <option key={p.slug} value={p.name}>
+                  {p.name} · {p.from ? "from " : ""}AED {p.price.toLocaleString("en-US")}/month
+                </option>
+              ))}
         </select>
       </div>
 
