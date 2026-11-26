@@ -476,7 +476,10 @@ export const AUDIT_STAGES = [
   "Generating recommendations",
 ];
 
-export const INTERESTS = ["Website", "Social media", "SEO", "Meta / Google Ads", "Branding & design", "Photo & video", "AI automation"];
+/** The enquiry-form interest that switches the package list to the website plans. */
+export const WEBSITE_INTEREST = "Website";
+
+export const INTERESTS = [WEBSITE_INTEREST, "Social media", "SEO", "Meta / Google Ads", "Branding & design", "Photo & video", "AI automation"];
 
 export type Launch = {
   title: string;
