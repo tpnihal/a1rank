@@ -7,7 +7,7 @@ Marketing website for [A1 Rank](https://www.a1rank.com), a digital marketing age
 - Next.js 14 (App Router) + TypeScript
 - Tailwind CSS with the A1 Rank design tokens (`tailwind.config.ts`)
 - Framer Motion for motion, React Three Fiber for the 3D hero
-- Resend for enquiry and newsletter emails
+- Enquiry, newsletter and audit-lead emails through the A1 Rank mailbox (SMTP, nodemailer), with Resend as a fallback
 - Google PageSpeed Insights API + Anthropic Claude API for the Website Audit tool (Stage 4)
 
 ## Run locally
@@ -22,7 +22,7 @@ Other commands: `npm run build`, `npm run start`, `npm run lint`, `npm run typec
 
 ## Environment variables
 
-See `.env.example`. Without `RESEND_API_KEY` and `ENQUIRY_FROM` the forms do not send email and
+See `.env.example`. Without `SMTP_PASS` (the admin@a1rank.com mailbox password), or `RESEND_API_KEY` and `ENQUIRY_FROM`, the forms do not send email and
 tell the visitor to write to admin@a1rank.com instead. Never commit real keys.
 
 ## Brand
@@ -57,7 +57,7 @@ Gradient: `linear-gradient(135deg, #EF5245, #EC2563)`. The vector logo mark (`co
 - The form asks for a website, an email address and an optional WhatsApp number. When the audit ends (or the
   visitor leaves first), the browser posts them with the scores to
   `/api/audit/lead`, which saves a row to a Google Sheet through `LEAD_WEBHOOK_URL`
-  (setup in `docs/audit-leads-google-sheet.md`) and also emails `ENQUIRY_TO` if Resend is configured.
+  (setup in `docs/audit-leads-google-sheet.md`) and also emails `ENQUIRY_TO` if email delivery is configured.
 
 - The browser posts the URL to `/api/audit` twice (mobile and desktop). The server validates the URL, rate-limits by
   IP and calls Google PageSpeed Insights with `PAGESPEED_API_KEY`. The key never reaches the browser.
