@@ -81,6 +81,22 @@
   .section-title {
     @apply text-[clamp(2.1rem,5vw,3.9rem)] font-extrabold;
   }
+  /* Highlighted "Website Plans" menu item: gradient ring with a slow sheen */
+  .plan-pill {
+    @apply relative overflow-hidden border-[1.5px] border-transparent shadow-glow;
+    background:
+      linear-gradient(#141012, #141012) padding-box,
+      linear-gradient(135deg, #ef5245, #ec2563) border-box;
+  }
+  .plan-pill::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.22) 50%, transparent 65%);
+    transform: translateX(-120%);
+    animation: plan-sheen 3.6s ease-in-out infinite;
+    pointer-events: none;
+  }
   .field {
     @apply w-full rounded-xl border border-white/15 bg-a1-ink px-4 py-3 text-[0.95rem] text-white placeholder:text-a1-stone transition focus:border-a1-pink focus:outline-none focus:ring-4 focus:ring-a1-pink/25;
   }
@@ -171,5 +187,15 @@
 @media (prefers-reduced-motion: reduce) {
   .service-tilt {
     transform: none;
+  }
+}
+
+@keyframes plan-sheen {
+  0%,
+  55% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
   }
 }

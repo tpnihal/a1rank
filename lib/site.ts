@@ -252,6 +252,100 @@ export function packageBySlug(slug?: string | null): Package | undefined {
 
 export const formatAed = (n: number) => n.toLocaleString("en-US");
 
+export type WebsitePlan = {
+  slug: string;
+  name: string;
+  /** Short line under the name, e.g. "Landing page". */
+  kind: string;
+  /** One-time project price in AED. */
+  price: number;
+  from?: boolean;
+  priceNote: string;
+  audience: string;
+  badge?: string;
+  inclusions: string[];
+  cta: string;
+};
+
+/** One-time website project prices (not monthly). Prices and page counts are set by A1 Rank; inclusions are drafts to confirm. */
+export const WEBSITE_PLANS: WebsitePlan[] = [
+  {
+    slug: "launch",
+    name: "Launch",
+    kind: "Landing page",
+    price: 699,
+    priceNote: "One-time",
+    audience: "For startups and new businesses that need a modern, SEO-friendly page online.",
+    inclusions: [
+      "1 modern landing page, designed mobile-first",
+      "SEO-friendly structure, titles and descriptions",
+      "WhatsApp, call and enquiry buttons",
+      "Enquiry form sent to your email",
+      "Google Analytics and Search Console setup",
+    ],
+    cta: "Start with Launch",
+  },
+  {
+    slug: "business",
+    name: "Business",
+    kind: "3 to 5 pages",
+    price: 1299,
+    priceNote: "One-time",
+    audience: "A fast, stunning business website. Our recommended plan for most businesses.",
+    badge: "Recommended",
+    inclusions: [
+      "3 to 5 pages: Home, About, Services, Contact and more",
+      "Custom modern design in your brand colours",
+      "Fast loading on mobile and desktop",
+      "On-page SEO on every page",
+      "Google Maps and Business Profile link",
+      "WhatsApp chat button and enquiry form",
+    ],
+    cta: "Choose Business",
+  },
+  {
+    slug: "seo-pro",
+    name: "SEO Pro",
+    kind: "Up to 20 pages",
+    price: 1999,
+    priceNote: "One-time",
+    audience: "A multi-level, SEO-integrated website with room for every service you offer.",
+    inclusions: [
+      "Up to 20 pages with multi-level menus",
+      "Separate pages for each service or location",
+      "Integrated SEO: keyword mapping, schema and sitemap",
+      "Blog section ready for regular articles",
+      "Gallery, enquiry forms, WhatsApp chat and more",
+      "Analytics and conversion tracking",
+    ],
+    cta: "Choose SEO Pro",
+  },
+  {
+    slug: "ecommerce",
+    name: "Ecommerce",
+    kind: "Online store",
+    price: 2999,
+    from: true,
+    priceNote: "One-time · plus custom features",
+    audience: "A complete online store. The final price depends on the custom features you need.",
+    inclusions: [
+      "Product catalogue with categories, filters and search",
+      "Cart, checkout and payment gateway integration",
+      "Order and stock management dashboard",
+      "Shipping and VAT settings",
+      "SEO-ready product and category pages",
+      "Custom features quoted to your needs",
+    ],
+    cta: "Plan my store",
+  },
+];
+
+export function websitePlanBySlug(slug?: string | null) {
+  if (!slug) return undefined;
+  const key = slug.toLowerCase().replace(/\s+/g, "-");
+  return WEBSITE_PLANS.find((p) => p.slug === key);
+}
+
 export type WorkCategory = "Websites" | "Social Media" | "SEO" | "Ads" | "AI Automation" | "Branding";
 
 export type Work = {
