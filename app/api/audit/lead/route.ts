@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { sendMail } from "@/lib/mailer";
 import { clientIp, createLimiter } from "@/lib/rate-limit";
 import { SITE } from "@/lib/site";
 import { normaliseUrl } from "@/lib/url";
@@ -14,7 +15,7 @@ const json = (body: object, status = 200) => NextResponse.json(body, { status, h
 /**
  * Records who ran a free audit: the visitor's email, optional WhatsApp number, the audited website and,
  * when the audit finished, its scores. The lead is posted as JSON to LEAD_WEBHOOK_URL (the Google Sheet
- * web app described in docs/audit-leads-google-sheet.md) and, if Resend is configured, also emailed to
+ * web app described in docs/audit-leads-google-sheet.md) and, if email delivery is configured (lib/mailer.ts), also emailed to
  * A1 Rank. The audit never depends on this call.
  */
 export async function POST(req: Request) {
@@ -99,12 +100,6 @@ async function postWebhook(payload: object) {
 }
 
 async function sendEmail(email: string, url: string, rows: [string, string][]) {
-  const key = process.env.RESEND_API_KEY;
-  const from = process.env.ENQUIRY_FROM;
-  if (!key || !from) {
-    return false;
-  }
-
   const html = `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6">
 <p>Someone ran the free website audit on ${esc(SITE.domain)}.</p>
 <table cellpadding="8" style="border-collapse:collapse">${rows
@@ -113,30 +108,6 @@ async function sendEmail(email: string, url: string, rows: [string, string][]) {
     .join("")}</table>
 <p>Reply to this email to contact them.</p></div>`;
 
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 10_000);
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      signal: controller.signal,
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from,
-        to: [process.env.ENQUIRY_TO || SITE.email],
-        reply_to: email,
-        subject: `[${SITE.domain}] Free audit lead: ${new URL(url).hostname}`,
-        html,
-      }),
-    });
-    if (!res.ok) {
-      console.error("[audit-lead] Resend rejected the message:", res.status, await res.text());
-      return false;
-    }
-    return true;
-  } catch (err) {
-    console.error("[audit-lead] Resend request failed:", err);
-    return false;
-  } finally {
-    clearTimeout(timer);
-  }
+  const subject = `[${SITE.domain}] Free audit lead: ${new URL(url).hostname}`;
+  return (await sendMail({ subject, html, replyTo: email }, "audit-lead")) === "sent";
 }
