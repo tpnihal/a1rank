@@ -114,6 +114,7 @@ export default function ContactPage({ searchParams }: Props) {
           key={`${pkg?.slug ?? plan?.slug ?? "none"}-${website}`}
           idPrefix="contact"
           defaultPackage={pkg?.name ?? ""}
+          defaultPlan={plan?.name ?? ""}
           defaultWebsite={website}
           topic={audit ? "Professional website audit" : pkg ? `${pkg.name} package` : plan ? `Website plan: ${plan.name} (${plan.from ? "from " : ""}AED ${formatAed(plan.price)})` : "General enquiry"}
         />

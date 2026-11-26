@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendMail } from "@/lib/mailer";
-import { INTERESTS, PACKAGES, SITE } from "@/lib/site";
+import { INTERESTS, PACKAGES, SITE, WEBSITE_INTEREST, WEBSITE_PLANS } from "@/lib/site";
 
 export const runtime = "nodejs";
 
@@ -58,10 +58,16 @@ export async function POST(req: Request) {
   } else {
     const name = str(body.name, 120);
     if (name.length < 2) return NextResponse.json({ error: "Please add your name." }, { status: 400 });
-    const pkg = PACKAGES.find((p) => p.name === str(body.package, 40))?.name ?? "Not chosen";
-    const interests = Array.isArray(body.interests)
+    let interests = Array.isArray(body.interests)
       ? body.interests.filter((i): i is string => typeof i === "string" && INTERESTS.includes(i))
       : [];
+    // One enquiry is either a website project or monthly marketing, never both.
+    const websiteMode = interests.includes(WEBSITE_INTEREST);
+    if (websiteMode) interests = [WEBSITE_INTEREST];
+    const chosen = str(body.package, 40);
+    const plan = websiteMode ? WEBSITE_PLANS.find((p) => p.name === chosen) : undefined;
+    const monthly = websiteMode ? undefined : PACKAGES.find((p) => p.name === chosen);
+    const pkg = plan ? `${plan.name} website plan` : monthly?.name ?? "Not chosen";
     subject = `New enquiry from ${name}${pkg !== "Not chosen" ? ` (${pkg})` : ""}`;
     rows = [
       ["Topic", str(body.topic, 120) || "General enquiry"],
@@ -70,7 +76,7 @@ export async function POST(req: Request) {
       ["Email", email],
       ["WhatsApp / phone", str(body.phone, 40)],
       ["Website", str(body.website, 300)],
-      ["Package", pkg],
+      [websiteMode ? "Website plan" : "Package", plan ? `${plan.name} (${plan.from ? "from " : ""}AED ${plan.price.toLocaleString("en-US")}, one-time)` : monthly ? `${monthly.name} (${monthly.from ? "from " : ""}AED ${monthly.price.toLocaleString("en-US")}/month)` : pkg],
       ["Interested in", interests.join(", ")],
       ["Goals", str(body.message, 4000)],
     ];
