@@ -181,7 +181,7 @@
 .service-tilt {
   transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transform-style: preserve-3d;
-  transition: transform 0.25s ease-out, border-color 0.3s;
+  transition: transform 0.25s ease-out, color 0.3s, box-shadow 0.3s;
   will-change: transform;
 }
 @media (prefers-reduced-motion: reduce) {
