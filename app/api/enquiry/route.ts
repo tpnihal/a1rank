@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { sendMail } from "@/lib/mailer";
 import { INTERESTS, PACKAGES, SITE } from "@/lib/site";
 
 export const runtime = "nodejs";
@@ -75,13 +76,6 @@ export async function POST(req: Request) {
     ];
   }
 
-  const key = process.env.RESEND_API_KEY;
-  const from = process.env.ENQUIRY_FROM;
-  if (!key || !from) {
-    console.warn("[enquiry] RESEND_API_KEY / ENQUIRY_FROM not set; message was not delivered.");
-    return NextResponse.json({ error: "Our online form is not connected to email yet." }, { status: 503 });
-  }
-
   const html = `<table cellpadding="8" style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse">${rows
     .filter(([, v]) => v)
     .map(
@@ -90,30 +84,13 @@ export async function POST(req: Request) {
     )
     .join("")}</table>`;
 
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 10_000);
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      signal: controller.signal,
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from,
-        to: [process.env.ENQUIRY_TO || SITE.email],
-        reply_to: email,
-        subject: `[${SITE.domain}] ${subject}`,
-        html,
-      }),
-    });
-    if (!res.ok) {
-      console.error("[enquiry] Resend rejected the message:", res.status, await res.text());
-      return NextResponse.json({ error: "We could not send your message right now." }, { status: 502 });
-    }
-  } catch (err) {
-    console.error("[enquiry] Resend request failed:", err);
-    return NextResponse.json({ error: "We could not send your message right now." }, { status: 504 });
-  } finally {
-    clearTimeout(timer);
+  const result = await sendMail({ subject: `[${SITE.domain}] ${subject}`, html, replyTo: email }, "enquiry");
+  if (result === "not_configured") {
+    console.warn("[enquiry] No email delivery configured (SMTP_PASS, or RESEND_API_KEY + ENQUIRY_FROM); message was not delivered.");
+    return NextResponse.json({ error: "Our online form is not connected to email yet." }, { status: 503 });
+  }
+  if (result === "failed") {
+    return NextResponse.json({ error: "We could not send your message right now." }, { status: 502 });
   }
 
   return NextResponse.json({ ok: true });
