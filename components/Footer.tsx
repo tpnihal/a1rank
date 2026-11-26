@@ -7,6 +7,7 @@ const COMPANY = [
   { label: "About", href: "/about" },
   { label: "Our Works", href: "/works" },
   { label: "Blogs", href: "/blog" },
+  { label: "Website Plans", href: "/website-plans" },
   { label: "Packages", href: "/services#packages" },
   { label: "Free Website Audit", href: "/website-audit" },
   { label: "Contact", href: "/contact" },

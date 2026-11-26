@@ -9,6 +9,7 @@ import { Packages } from "@/components/Packages";
 import { Process } from "@/components/Process";
 import { Services } from "@/components/Services";
 import { Statement } from "@/components/Statement";
+import { WebsitePlansTeaser } from "@/components/WebsitePlans";
 import { Works } from "@/components/Works";
 
 export default function HomePage() {
@@ -18,6 +19,7 @@ export default function HomePage() {
       <Marquee />
       <Services />
       <Launches />
+      <WebsitePlansTeaser />
       <Statement />
       <Works />
       <Industries />

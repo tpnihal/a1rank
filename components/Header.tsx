@@ -179,8 +179,18 @@ export function Header() {
         </Link>
 
         <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
+          <Link
+            href="/website-plans"
+            aria-current={active("/website-plans") ? "page" : undefined}
+            onMouseEnter={() => show(null)}
+            onFocus={() => show(null)}
+            className="plan-pill mr-1 flex items-center gap-2 whitespace-nowrap rounded-full px-3.5 py-[0.4rem] text-[0.9rem] font-bold text-white transition hover:-translate-y-0.5"
+          >
+            Website Plans
+            <span className="hidden rounded-full bg-a1-gradient px-2 py-0.5 font-mono text-[0.62rem] uppercase tracking-[0.08em] min-[1340px]:inline">from AED 699</span>
+          </Link>
           {NAV.map((item) => {
-            const cls = `flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[0.9rem] font-semibold transition hover:bg-white/10 hover:text-white ${
+            const cls = `flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-2 xl:px-3.5 text-[0.9rem] font-semibold transition hover:bg-white/10 hover:text-white ${
               active(item.href) || menu === item.href ? "bg-white/10 text-white" : "text-a1-ash"
             }`;
             return hasMenu(item.href) ? (
@@ -216,7 +226,7 @@ export function Header() {
         <div className="flex items-center gap-2">
           <Link
             href="/website-audit"
-            className="hidden items-center gap-2 rounded-full px-4 py-2.5 text-[0.88rem] font-bold text-white ring-1 ring-inset ring-a1-coral/60 transition hover:bg-a1-coral/15 sm:inline-flex"
+            className="hidden items-center gap-2 rounded-full px-4 py-2.5 text-[0.88rem] font-bold text-white ring-1 ring-inset ring-a1-coral/60 transition hover:bg-a1-coral/15 sm:inline-flex lg:hidden xl:inline-flex"
           >
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-a1-coral opacity-70" />
@@ -224,7 +234,7 @@ export function Header() {
             </span>
             Free Audit
           </Link>
-          <Link href="/contact" className="hidden rounded-full bg-a1-gradient px-5 py-2.5 text-[0.88rem] font-bold text-white shadow-glow transition hover:-translate-y-0.5 md:inline-flex">
+          <Link href="/contact" className="hidden rounded-full bg-a1-gradient whitespace-nowrap px-5 py-2.5 text-[0.88rem] font-bold text-white shadow-glow transition hover:-translate-y-0.5 md:inline-flex">
             Get a Quote
           </Link>
           <button
@@ -270,6 +280,17 @@ export function Header() {
             transition={{ duration: 0.22 }}
             className="mx-auto mt-2 max-h-[calc(100dvh-5.5rem)] max-w-site overflow-y-auto overscroll-contain rounded-3xl border border-white/15 bg-a1-ink/95 p-4 backdrop-blur-xl lg:hidden"
           >
+            <Link
+              href="/website-plans"
+              onClick={() => setOpen(false)}
+              className="mb-2 flex items-center justify-between gap-3 rounded-2xl bg-a1-gradient px-4 py-4 shadow-glow"
+            >
+              <span>
+                <span className="block font-display text-2xl font-bold leading-tight">Website Plans</span>
+                <span className="mt-1 block font-mono text-[0.7rem] uppercase tracking-[0.12em] text-white/90">From AED 699 · one-time price</span>
+              </span>
+              <ArrowRight className="h-5 w-5 shrink-0" />
+            </Link>
             <nav aria-label="Mobile" className="flex flex-col">
               {NAV.map((item, i) => (
                 <motion.div key={item.href} initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.04 * i }} className="border-b border-white/10">
