@@ -33,7 +33,7 @@ const FILLED: Record<string, "gradient" | "dark"> = {
 export function Services() {
   return (
     <section id="services" className="bg-a1-ink px-2 py-3 md:px-4">
-      <div className="relative overflow-hidden rounded-[2rem] bg-a1-paper py-14 text-a1-ink md:rounded-[2.75rem] md:py-20">
+      <div className="relative overflow-clip rounded-[2rem] bg-a1-paper py-14 text-a1-ink md:rounded-[2.75rem] md:py-20">
         <div className="pointer-events-none absolute -left-40 -top-40 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(236,37,99,0.16),transparent_65%)]" aria-hidden />
         <div className="pointer-events-none absolute -bottom-52 right-[-8rem] h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(239,82,69,0.18),transparent_65%)]" aria-hidden />
         <div className="wrap relative">

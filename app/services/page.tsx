@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { CtaBand } from "@/components/CtaBand";
-import { ArrowUpRight, Check, ServiceIcon } from "@/components/Icons";
+import { ArrowUpRight, Check } from "@/components/Icons";
 import { JsonLd, breadcrumbJsonLd } from "@/components/JsonLd";
 import { PageHero } from "@/components/PageHero";
 import { Packages } from "@/components/Packages";
 import { Process } from "@/components/Process";
 import { Reveal } from "@/components/Reveal";
+import { ServiceVisual } from "@/components/ServiceVisual";
 import { SERVICE_DETAILS } from "@/lib/service-details";
 import { SERVICES, TOOLS } from "@/lib/site";
 
@@ -16,6 +16,33 @@ export const metadata: Metadata = {
   description:
     "Ten services from one Dubai team: strategy, social media, branding, websites, SEO, Meta and Google Ads, photo and video, AI video, AI automation and analytics.",
   alternates: { canonical: "/services" },
+};
+
+/** Short sub-service tags shown as pills on each block. */
+const SERVICE_TAGS: Record<string, string[]> = {
+  "digital-marketing-strategy": ["Market research", "Competitor audit", "Channel plan", "Lead funnel", "90-day roadmap", "Tracking plan"],
+  "social-media-management": ["Content calendar", "Posts & carousels", "Reels", "Captions", "Community replies", "Monthly report"],
+  "graphic-design-branding": ["Logo design", "Brand guidelines", "Social templates", "Company profiles", "Brochures & menus", "Packaging"],
+  "website-design-development": ["Landing pages", "Business websites", "Ecommerce stores", "WordPress", "Next.js", "Arabic & English"],
+  "seo-google-business-profile": ["Technical SEO", "Keyword research", "On-page SEO", "Google Business Profile", "AI search (GEO)", "Ranking reports"],
+  "meta-google-ads": ["Meta Ads", "Google Ads", "Ad creatives", "Retargeting", "Conversion tracking", "Weekly optimisation"],
+  "photography-videography": ["Product shoots", "Food photography", "Property & interiors", "Team portraits", "Reels & ad video", "Editing & retouching"],
+  "ai-video-creative-content": ["AI reels", "Ad variations", "Product visuals", "Explainers", "Voice-over & captions", "Scripts & hooks"],
+  "ai-agents-automation": ["WhatsApp AI agent", "Website chat", "Lead routing", "Appointment booking", "CRM integration", "n8n workflows"],
+  "analytics-reporting-lead-generation": ["GA4", "Tag Manager", "Meta pixel", "Call & form tracking", "Lead dashboard", "Monthly reports"],
+};
+
+const SERVICE_CTA: Record<string, string> = {
+  "digital-marketing-strategy": "Plan my growth",
+  "social-media-management": "Start my social media",
+  "graphic-design-branding": "Start a brand project",
+  "website-design-development": "Scope my website",
+  "seo-google-business-profile": "Improve my rankings",
+  "meta-google-ads": "Scope a campaign",
+  "photography-videography": "Book a shoot",
+  "ai-video-creative-content": "Create AI content",
+  "ai-agents-automation": "Automate my replies",
+  "analytics-reporting-lead-generation": "Set up my tracking",
 };
 
 export default function ServicesPage() {
@@ -50,35 +77,47 @@ export default function ServicesPage() {
             ))}
           </nav>
 
-          <div className="mt-12 space-y-16 md:mt-16 md:space-y-24">
+          <div className="mt-12 divide-y divide-black/10 border-t border-black/10 md:mt-16">
             {SERVICES.map((s, i) => {
               const d = SERVICE_DETAILS[s.slug];
+              const tags = SERVICE_TAGS[s.slug] ?? [];
+              const web = s.slug === "website-design-development";
               return (
-                <article key={s.slug} id={s.slug} className="grid scroll-mt-28 items-center gap-8 lg:grid-cols-2 lg:gap-16">
-                  <div className={`relative aspect-[3/2] overflow-hidden rounded-[1.75rem] bg-a1-ink ${i % 2 ? "lg:order-2" : ""}`}>
-                    <Image src={s.image} alt={s.title} fill sizes="(min-width: 1024px) 580px, 100vw" className="object-cover" />
-                    <span className="absolute left-4 top-4 grid h-12 w-12 place-items-center rounded-2xl bg-a1-gradient text-white shadow-glow">
-                      <ServiceIcon name={s.icon} />
-                    </span>
-                  </div>
-                  <div>
-                    <p className="eyebrow text-a1-pink">
-                      {String(i + 1).padStart(2, "0")} · {s.label}
-                    </p>
-                    <h2 className="mt-3 text-[clamp(1.7rem,3vw,2.5rem)] font-extrabold leading-[1.05]">{s.title}</h2>
-                    <p className="mt-4 text-[1.05rem] text-a1-stone">{d.headline}</p>
-                    <ul className="mt-6 space-y-2.5">
-                      {d.deliverables.slice(0, 5).map((x) => (
-                        <li key={x} className="grid grid-cols-[1.5rem_1fr] items-start gap-2.5 text-[0.96rem]">
+                <article key={s.slug} id={s.slug} className="grid scroll-mt-24 items-start gap-9 py-14 lg:grid-cols-[1.25fr_0.75fr] lg:gap-20 lg:py-20">
+                  <div className="lg:py-2">
+                    <p className="font-mono text-[0.8rem] text-a1-stone">({String(i + 1).padStart(2, "0")})</p>
+                    <h2 className="mt-3 text-[clamp(1.9rem,3.6vw,3rem)] font-bold leading-[1.05] tracking-[-0.025em]">{s.title}</h2>
+                    <p className="mt-5 max-w-[44rem] text-[1.08rem] leading-relaxed text-a1-stone md:text-[1.2rem]">{d.intro}</p>
+                    <ul className="mt-7 flex flex-wrap gap-2">
+                      {tags.map((t) => (
+                        <li key={t} className="rounded-full bg-a1-paper px-4 py-2 text-[0.88rem] font-semibold ring-1 ring-inset ring-black/[0.07]">
+                          {t}
+                        </li>
+                      ))}
+                    </ul>
+                    <ul className="mt-8 max-w-[44rem] divide-y divide-black/10">
+                      {d.deliverables.slice(0, 4).map((x) => (
+                        <li key={x} className="grid grid-cols-[1.5rem_1fr] items-start gap-2.5 py-3.5 text-[1rem]">
                           <Check className="mt-1 h-4 w-4 text-a1-pink" />
                           {x}
                         </li>
                       ))}
                     </ul>
-                    <Link href="/contact" className="mt-7 inline-flex items-center gap-2 font-bold hover:text-a1-pink">
-                      Enquire about this service <ArrowUpRight />
-                    </Link>
+                    <div className="mt-8 flex flex-wrap gap-3">
+                      <Link
+                        href="/contact"
+                        className="inline-flex items-center gap-2.5 rounded-full px-6 py-3.5 text-[1rem] font-semibold ring-1 ring-inset ring-a1-ink/30 transition hover:bg-a1-ink hover:text-white hover:ring-a1-ink"
+                      >
+                        {SERVICE_CTA[s.slug] ?? "Enquire about this service"} <ArrowUpRight />
+                      </Link>
+                      {web ? (
+                        <Link href="/website-plans" className="inline-flex items-center gap-2.5 rounded-full bg-a1-gradient px-6 py-3.5 text-[1rem] font-semibold text-white shadow-glow transition hover:-translate-y-0.5">
+                          Website plans from AED 699 <ArrowUpRight />
+                        </Link>
+                      ) : null}
+                    </div>
                   </div>
+                  <ServiceVisual icon={s.icon} index={i} label={s.label} tags={tags} />
                 </article>
               );
             })}
