@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { INDUSTRIES, NAV, SERVICES } from "@/lib/site";
 import { Logo } from "./Logo";
+import { MenuPreview } from "./MenuPreview";
 import { ArrowRight, ArrowUpRight, ServiceIcon } from "./Icons";
 
 type MenuKey = "/services" | "/industries";
@@ -34,6 +35,7 @@ function Chevron({ open }: { open: boolean }) {
 }
 
 function ServicesMenu({ close }: { close: () => void }) {
+  const [preview, setPreview] = useState(SERVICES[0].slug);
   return (
     <>
       <div className="grid gap-8 p-7 lg:grid-cols-[1fr_1fr_1fr_17.5rem] xl:p-8">
@@ -46,8 +48,18 @@ function ServicesMenu({ close }: { close: () => void }) {
                 if (!s) return null;
                 return (
                   <li key={slug}>
-                    <Link href={`/services#${slug}`} onClick={close} className="group/item flex items-start gap-3 rounded-2xl px-3 py-2.5 transition hover:bg-white/[0.07]">
-                      <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/[0.07] text-a1-coral transition group-hover/item:bg-a1-gradient group-hover/item:text-white">
+                    <Link
+                      href={`/services#${slug}`}
+                      onClick={close}
+                      onMouseEnter={() => setPreview(slug)}
+                      onFocus={() => setPreview(slug)}
+                      className={`group/item flex items-start gap-3 rounded-2xl px-3 py-2.5 transition hover:bg-white/[0.07] ${preview === slug ? "bg-white/[0.07]" : ""}`}
+                    >
+                      <span
+                        className={`mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl transition group-hover/item:bg-a1-gradient group-hover/item:text-white ${
+                          preview === slug ? "bg-a1-gradient text-white" : "bg-white/[0.07] text-a1-coral"
+                        }`}
+                      >
                         <ServiceIcon name={s.icon} className="h-[1.1rem] w-[1.1rem]" />
                       </span>
                       <span>
@@ -61,19 +73,7 @@ function ServicesMenu({ close }: { close: () => void }) {
             </ul>
           </div>
         ))}
-        <Link href="/website-audit" onClick={close} className="group/card relative flex min-h-[15rem] flex-col justify-between overflow-hidden rounded-3xl bg-a1-gradient p-6 text-white">
-          <span className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/15 blur-2xl transition-transform duration-500 group-hover/card:scale-125" aria-hidden />
-          <span className="eyebrow relative flex items-center gap-2 !text-[0.66rem]">
-            <i className="h-1.5 w-1.5 rounded-full bg-white" aria-hidden /> Free tool
-          </span>
-          <span className="relative">
-            <span className="block font-display text-[1.6rem] font-extrabold leading-[1.05]">Free Website Audit</span>
-            <span className="mt-2 block text-[0.88rem] leading-snug text-white/85">Check your site&apos;s speed, SEO and accessibility in about a minute.</span>
-            <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[0.84rem] font-bold text-a1-ink">
-              Run free audit <ArrowRight className="h-4 w-4" />
-            </span>
-          </span>
-        </Link>
+        <MenuPreview service={SERVICES.find((x) => x.slug === preview) ?? SERVICES[0]} onNavigate={close} />
       </div>
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 px-8 py-4 text-[0.88rem]">
         <p className="text-a1-ash">
