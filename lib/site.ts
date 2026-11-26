@@ -182,7 +182,7 @@ export const PACKAGES: Package[] = [
     price: 999,
     audience: "For startups and small shops getting a professional presence online.",
     inclusions: [
-      "1 social platform, 12 designed posts / month",
+      "1 social platform: 6 designed posts + 2 carousels / month",
       "Google Business Profile setup & 4 posts",
       "Basic SEO audit and fixes",
       "Brand kit: logo touch-up and templates",
@@ -197,8 +197,8 @@ export const PACKAGES: Package[] = [
     audience: "For growing businesses that want steady leads every month.",
     inherits: "Everything in GO, plus",
     inclusions: [
-      "2 platforms, 16 posts + 4 reels",
-      "Meta Ads management (2 campaigns)",
+      "2 platforms: 8 posts, 4 carousels + 4 reels",
+      "Meta + TikTok Ads management (2 campaigns)",
       "On-page SEO for 10 keywords",
       "1 conversion landing page",
       "Lead tracking with GA4 & pixel",
@@ -213,8 +213,8 @@ export const PACKAGES: Package[] = [
     badge: "Most popular",
     inherits: "Everything in Pro, plus",
     inclusions: [
-      "3 platforms, 20 posts + 8 reels",
-      "Meta + Google Ads, up to 4 campaigns",
+      "3 platforms: 10 posts, 6 carousels + 8 reels",
+      "Meta, TikTok + Google Ads, up to 6 campaigns",
       "SEO for 25 keywords + 2 blogs / month",
       "WordPress website (up to 8 pages) or revamp",
       "Monthly photo/video shoot in Dubai",
